@@ -4,6 +4,20 @@ import { loadFont } from "./loadFont";
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
 
+// 이모지 코드포인트를 Twemoji SVG URL로 변환
+function getEmojiSvgUrl(emoji) {
+  const codePoints = [];
+  for (let i = 0; i < emoji.length; i++) {
+    const code = emoji.codePointAt(i);
+    if (code > 0xffff) i++; // 서로게이트 페어 건너뛰기
+    // variation selector(0xfe0f) 제거
+    if (code !== 0xfe0f) {
+      codePoints.push(code.toString(16));
+    }
+  }
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codePoints.join("-")}.svg`;
+}
+
 export async function renderOgImage(template, cardData) {
   const fontData = await loadFont();
 
@@ -26,6 +40,20 @@ export async function renderOgImage(template, cardData) {
         style: "normal",
       },
     ],
+    loadAdditionalAsset: async (languageCode, segment) => {
+      if (languageCode === "emoji") {
+        const url = getEmojiSvgUrl(segment);
+        try {
+          const res = await fetch(url);
+          if (!res.ok) return segment;
+          const svgText = await res.text();
+          return `data:image/svg+xml;base64,${btoa(svgText)}`;
+        } catch {
+          return segment;
+        }
+      }
+      return segment;
+    },
   });
 
   return svg;
