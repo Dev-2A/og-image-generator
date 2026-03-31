@@ -1,9 +1,22 @@
-export default function InputPanel() {
+import { templateList } from "../../data/defaults";
+
+export default function InputPanel({
+  cardData,
+  updateField,
+  updateTechStack,
+  resetData,
+}) {
   return (
     <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-      <h2 className="text-lg font-semibold text-white mb-4">
-        📝 프로젝트 정보
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-white">📝 프로젝트 정보</h2>
+        <button
+          onClick={resetData}
+          className="text-xs text-slate-400 hover:text-red-400 transition-colors"
+        >
+          🔄 초기화
+        </button>
+      </div>
 
       <div className="space-y-4">
         {/* 프로젝트 이름 */}
@@ -13,6 +26,8 @@ export default function InputPanel() {
           </label>
           <input
             type="text"
+            value={cardData.title}
+            onChange={(e) => updateField("title", e.target.value)}
             placeholder="예: OG Image Generator"
             className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
@@ -25,6 +40,8 @@ export default function InputPanel() {
           </label>
           <input
             type="text"
+            value={cardData.description}
+            onChange={(e) => updateField("description", e.target.value)}
             placeholder="예: 프로젝트 OG 카드 이미지 자동 생성기"
             className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
@@ -37,35 +54,70 @@ export default function InputPanel() {
           </label>
           <input
             type="text"
+            onChange={(e) => updateTechStack(e.target.value)}
             placeholder="예: React, Vite, Satori, Tailwind CSS"
             className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
+          {/* 입력된 기술 스택 뱃지 미리보기 */}
+          {cardData.techStack.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {cardData.techStack.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* 이모지 */}
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">
-            대표 이모지
-          </label>
-          <input
-            type="text"
-            placeholder="예: 🖼️"
-            maxLength={4}
-            className="w-20 px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white text-center text-xl placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+        {/* 이모지 + 작성자 */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              대표 이모지
+            </label>
+            <input
+              type="text"
+              value={cardData.emoji}
+              onChange={(e) => updateField("emoji", e.target.value)}
+              placeholder="🚀"
+              maxLength={4}
+              className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white text-center text-xl placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              작성자
+            </label>
+            <input
+              type="text"
+              value={cardData.author}
+              onChange={(e) => updateField("author", e.target.value)}
+              placeholder="Dev-2A"
+              className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
         </div>
       </div>
 
-      {/* 템플릿 선택 (플레이스홀더) */}
+      {/* 템플릿 선택 */}
       <div className="mt-6 pt-6 border-t border-slate-700">
         <h3 className="text-sm font-medium text-slate-300 mb-3">🎨 템플릿</h3>
-        <div className="grid grid-cols-4 gap-2">
-          {["Minimal", "Gradient", "Card", "Terminal"].map((name) => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {templateList.map((tpl) => (
             <button
-              key={name}
-              className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs text-slate-300 transition-colors border border-transparent hover:border-slate-500"
+              key={tpl.id}
+              onClick={() => updateField("template", tpl.id)}
+              className={`px-3 py-2 rounded-lg text-xs transition-colors border ${
+                cardData.template === tpl.id
+                  ? "bg-blue-600 border-blue-500 text-white"
+                  : "bg-slate-700 border-transparent hover:bg-slate-600 text-slate-300 hover:border-slate-500"
+              }`}
             >
-              {name}
+              {tpl.icon} {tpl.name}
             </button>
           ))}
         </div>
