@@ -15,7 +15,7 @@ function getEmojiSvgUrl(emoji) {
       codePoints.push(code.toString(16));
     }
   }
-  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codePoints.join("-")}.svg`;
+  return `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codePoints.join('-')}.svg`;
 }
 
 export async function renderOgImage(template, cardData) {
@@ -47,7 +47,7 @@ export async function renderOgImage(template, cardData) {
           const res = await fetch(url);
           if (!res.ok) return segment;
           const svgText = await res.text();
-          return `data:image/svg+xml;base64,${btoa(svgText)}`;
+          return `data:image/svg+xml,${encodeURIComponent(svgText)}`;
         } catch {
           return segment;
         }
