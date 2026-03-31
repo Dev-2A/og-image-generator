@@ -1,3 +1,5 @@
+import { getTechIcon } from "../data/techIcons";
+
 export default function gradient(cardData) {
   const techStack = cardData.techStack || [];
 
@@ -16,7 +18,6 @@ export default function gradient(cardData) {
         position: "relative",
       }}
     >
-      {/* 배경 장식 원 (좌상단) */}
       <div
         style={{
           position: "absolute",
@@ -29,8 +30,6 @@ export default function gradient(cardData) {
           display: "flex",
         }}
       />
-
-      {/* 배경 장식 원 (우하단) */}
       <div
         style={{
           position: "absolute",
@@ -44,12 +43,10 @@ export default function gradient(cardData) {
         }}
       />
 
-      {/* 이모지 */}
       <div style={{ fontSize: "64px", marginBottom: "16px", display: "flex" }}>
         {cardData.emoji}
       </div>
 
-      {/* 프로젝트 이름 */}
       <div
         style={{
           fontSize: "52px",
@@ -58,13 +55,11 @@ export default function gradient(cardData) {
           marginBottom: "12px",
           textAlign: "center",
           display: "flex",
-          textShadow: "0 2px 10px rgba(0,0,0,0.2)",
         }}
       >
         {cardData.title || "Project Name"}
       </div>
 
-      {/* 설명 */}
       <div
         style={{
           fontSize: "22px",
@@ -77,7 +72,6 @@ export default function gradient(cardData) {
         {cardData.description || ""}
       </div>
 
-      {/* 기술 스택 뱃지 */}
       <div
         style={{
           display: techStack.length > 0 ? "flex" : "none",
@@ -86,26 +80,27 @@ export default function gradient(cardData) {
           justifyContent: "center",
         }}
       >
-        {techStack.map((tech, i) => (
-          <div
-            key={i}
-            style={{
-              padding: "6px 16px",
-              backgroundColor: "rgba(255,255,255,0.15)",
-              borderRadius: "9999px",
-              fontSize: "16px",
-              color: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.25)",
-              display: "flex",
-              backdropFilter: "blur(4px)",
-            }}
-          >
-            {tech}
-          </div>
-        ))}
+        {techStack.map((tech, i) => {
+          const icon = getTechIcon(tech);
+          return (
+            <div
+              key={i}
+              style={{
+                padding: "6px 16px",
+                backgroundColor: `${icon.bg}cc`,
+                borderRadius: "9999px",
+                fontSize: "16px",
+                color: icon.color,
+                border: `1px solid ${icon.color}44`,
+                display: "flex",
+              }}
+            >
+              {icon.label}
+            </div>
+          );
+        })}
       </div>
 
-      {/* 작성자 */}
       <div
         style={{
           position: "absolute",

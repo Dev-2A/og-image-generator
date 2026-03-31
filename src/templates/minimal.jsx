@@ -1,3 +1,5 @@
+import { getTechIcon } from "../data/techIcons";
+
 export default function minimal(cardData) {
   const techStack = cardData.techStack || [];
 
@@ -16,12 +18,10 @@ export default function minimal(cardData) {
         position: "relative",
       }}
     >
-      {/* 이모지 */}
       <div style={{ fontSize: "72px", marginBottom: "20px", display: "flex" }}>
         {cardData.emoji}
       </div>
 
-      {/* 프로젝트 이름 */}
       <div
         style={{
           fontSize: "48px",
@@ -35,7 +35,6 @@ export default function minimal(cardData) {
         {cardData.title || "Project Name"}
       </div>
 
-      {/* 설명 */}
       <div
         style={{
           fontSize: "22px",
@@ -48,7 +47,6 @@ export default function minimal(cardData) {
         {cardData.description || ""}
       </div>
 
-      {/* 기술 스택 뱃지 */}
       <div
         style={{
           display: techStack.length > 0 ? "flex" : "none",
@@ -57,25 +55,27 @@ export default function minimal(cardData) {
           justifyContent: "center",
         }}
       >
-        {techStack.map((tech, i) => (
-          <div
-            key={i}
-            style={{
-              padding: "6px 16px",
-              backgroundColor: "#1e293b",
-              borderRadius: "9999px",
-              fontSize: "16px",
-              color: "#cbd5e1",
-              border: "1px solid #334155",
-              display: "flex",
-            }}
-          >
-            {tech}
-          </div>
-        ))}
+        {techStack.map((tech, i) => {
+          const icon = getTechIcon(tech);
+          return (
+            <div
+              key={i}
+              style={{
+                padding: "6px 16px",
+                backgroundColor: icon.bg,
+                borderRadius: "9999px",
+                fontSize: "16px",
+                color: icon.color,
+                border: `1px solid ${icon.color}33`,
+                display: "flex",
+              }}
+            >
+              {icon.label}
+            </div>
+          );
+        })}
       </div>
 
-      {/* 작성자 */}
       <div
         style={{
           position: "absolute",

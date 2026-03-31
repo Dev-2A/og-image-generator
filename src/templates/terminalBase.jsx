@@ -1,5 +1,4 @@
-// 터미널 스타일 OG 카드 — 공통 베이스
-// 각 테마는 colors 객체만 바꿔서 호출
+import { getTechIcon } from "../data/techIcons";
 
 export default function terminalBase(cardData, colors) {
   const techStack = cardData.techStack || [];
@@ -29,13 +28,7 @@ export default function terminalBase(cardData, colors) {
           borderBottom: `1px solid ${colors.border}`,
         }}
       >
-        {/* 윈도우 버튼 */}
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-          }}
-        >
+        <div style={{ display: "flex", gap: "8px" }}>
           <div
             style={{
               width: "14px",
@@ -64,8 +57,6 @@ export default function terminalBase(cardData, colors) {
             }}
           />
         </div>
-
-        {/* 타이틀 */}
         <div
           style={{
             fontSize: "14px",
@@ -88,7 +79,6 @@ export default function terminalBase(cardData, colors) {
           gap: "8px",
         }}
       >
-        {/* $ cat project.md */}
         <div
           style={{
             display: "flex",
@@ -103,7 +93,6 @@ export default function terminalBase(cardData, colors) {
           </div>
         </div>
 
-        {/* 이모지 + 프로젝트 이름 */}
         <div
           style={{
             display: "flex",
@@ -127,7 +116,6 @@ export default function terminalBase(cardData, colors) {
           </div>
         </div>
 
-        {/* 구분선 */}
         <div
           style={{
             display: "flex",
@@ -139,7 +127,6 @@ export default function terminalBase(cardData, colors) {
           {"─".repeat(60)}
         </div>
 
-        {/* 설명 */}
         <div
           style={{
             fontSize: "22px",
@@ -151,7 +138,6 @@ export default function terminalBase(cardData, colors) {
           {cardData.description || ""}
         </div>
 
-        {/* 기술 스택 — 터미널 스타일 */}
         <div
           style={{
             display: techStack.length > 0 ? "flex" : "none",
@@ -173,21 +159,24 @@ export default function terminalBase(cardData, colors) {
             gap: "10px",
           }}
         >
-          {techStack.map((tech, i) => (
-            <div
-              key={i}
-              style={{
-                padding: "4px 14px",
-                border: `1px solid ${colors.accent}`,
-                borderRadius: "4px",
-                fontSize: "15px",
-                color: colors.accent,
-                display: "flex",
-              }}
-            >
-              {tech}
-            </div>
-          ))}
+          {techStack.map((tech, i) => {
+            const icon = getTechIcon(tech);
+            return (
+              <div
+                key={i}
+                style={{
+                  padding: "4px 14px",
+                  border: `1px solid ${icon.color}88`,
+                  borderRadius: "4px",
+                  fontSize: "15px",
+                  color: icon.color,
+                  display: "flex",
+                }}
+              >
+                {icon.label}
+              </div>
+            );
+          })}
         </div>
       </div>
 
