@@ -27,11 +27,11 @@ export default function PreviewPanel({ cardData }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 lg:sticky lg:top-24">
       {/* 프리뷰 카드 */}
-      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-none">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
             👁️ 미리보기
             {isRendering && (
               <span className="ml-2 text-xs text-blue-400 animate-pulse">
@@ -42,14 +42,14 @@ export default function PreviewPanel({ cardData }) {
           <button
             onClick={handleDownload}
             disabled={!svgString || isDownloading}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-200 dark:disabled:bg-slate-700 disabled:text-slate-400 dark:disabled:text-slate-500 text-white text-sm font-medium rounded-lg transition-colors"
           >
             {isDownloading ? "⏳ 변환 중..." : "📥 PNG 다운로드"}
           </button>
         </div>
 
         {/* OG 이미지 프리뷰 */}
-        <div className="w-full aspect-[1200/630] bg-slate-900 rounded-lg border-2 border-dashed border-slate-600 overflow-hidden">
+        <div className="w-full aspect-[1200/630] bg-slate-100 dark:bg-slate-900 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 overflow-hidden">
           {svgString ? (
             <div
               className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
@@ -57,26 +57,28 @@ export default function PreviewPanel({ cardData }) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center text-slate-500">
+              <div className="text-center text-slate-400 dark:text-slate-500">
                 <p className="text-4xl mb-2">🖼️</p>
                 <p className="text-sm">프로젝트 정보를 입력하면</p>
                 <p className="text-sm">여기에 OG 카드가 표시됩니다</p>
-                <p className="text-xs mt-2 text-slate-600">1200 × 630px</p>
+                <p className="text-xs mt-2 text-slate-300 dark:text-slate-600">
+                  1200 × 630px
+                </p>
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* 다운로드 정보 카드 */}
-      <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+      {/* 다운로드 정보 */}
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-none">
         <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
             <span>📐 1200 × 630px</span>
             <span>📦 PNG</span>
             <span>🎨 {cardData.template}</span>
           </div>
-          <span className="text-slate-500">
+          <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">
             {hasData && cardData.title
               ? `${cardData.title.replace(/[^a-zA-Z0-9가-힣]/g, "_")}_og.png`
               : "og-image.png"}
@@ -85,7 +87,7 @@ export default function PreviewPanel({ cardData }) {
       </div>
 
       {/* 사용 팁 */}
-      <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+      <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
         <p className="text-xs text-slate-500 mb-2">💡 사용 팁</p>
         <ul className="text-xs text-slate-400 space-y-1">
           <li>• 다운로드한 PNG를 GitHub README에 바로 사용할 수 있어요</li>

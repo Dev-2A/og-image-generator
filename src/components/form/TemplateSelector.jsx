@@ -5,9 +5,8 @@ export default function TemplateSelector({ selected, onSelect }) {
   const terminalTemplates = templateList.filter((t) => t.group === "terminal");
 
   return (
-    <div className="mt-6 pt-6 border-t border-slate-700">
-      {/* 기본 템플릿 */}
-      <h3 className="text-sm font-medium text-slate-300 mb-3">
+    <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-3">
         🎨 기본 템플릿
       </h3>
       <div className="grid grid-cols-3 gap-2 mb-4">
@@ -21,8 +20,7 @@ export default function TemplateSelector({ selected, onSelect }) {
         ))}
       </div>
 
-      {/* 터미널 테마 */}
-      <h3 className="text-sm font-medium text-slate-300 mb-3">
+      <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-3">
         💻 Terminal 테마
       </h3>
       <div className="grid grid-cols-5 gap-2">
@@ -47,11 +45,10 @@ function TemplateCard({ tpl, isSelected, onSelect }) {
       onClick={() => onSelect("template", tpl.id)}
       className={`group relative rounded-lg overflow-hidden transition-all ${
         isSelected
-          ? "ring-2 ring-blue-500 ring-offset-2 ring-offset-slate-800"
-          : "hover:ring-1 hover:ring-slate-500"
+          ? "ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-800"
+          : "hover:ring-1 hover:ring-slate-400 dark:hover:ring-slate-500"
       }`}
     >
-      {/* 미니 프리뷰 */}
       <div
         className="aspect-[1200/630] flex flex-col items-center justify-center p-2"
         style={{
@@ -59,7 +56,6 @@ function TemplateCard({ tpl, isSelected, onSelect }) {
           backgroundColor: isGradient ? undefined : tpl.colors.bg,
         }}
       >
-        {/* 미니 타이틀 바 (터미널만) */}
         {tpl.group === "terminal" && (
           <div
             className="absolute top-0 left-0 right-0 h-2 flex items-center gap-0.5 px-1"
@@ -71,7 +67,6 @@ function TemplateCard({ tpl, isSelected, onSelect }) {
           </div>
         )}
 
-        {/* 미니 콘텐츠 라인 */}
         <div
           className="w-3/4 h-1.5 rounded-full mb-1"
           style={{ backgroundColor: tpl.colors.accent }}
@@ -92,10 +87,11 @@ function TemplateCard({ tpl, isSelected, onSelect }) {
         </div>
       </div>
 
-      {/* 라벨 */}
       <div
-        className={`text-center py-1.5 text-xs ${
-          isSelected ? "text-blue-400 font-medium" : "text-slate-400"
+        className={`text-center py-1.5 text-xs bg-white dark:bg-slate-800 ${
+          isSelected
+            ? "text-blue-500 dark:text-blue-400 font-medium"
+            : "text-slate-500 dark:text-slate-400"
         }`}
       >
         {tpl.name}
