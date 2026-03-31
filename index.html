@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OG Image Generator</title>
+    <script>
+      (function () {
+        const saved = localStorage.getItem("og-gen-theme");
+        const isDark = saved
+          ? saved === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (isDark) document.documentElement.classList.add("dark");
+      })();
+    </script>
+    <script type="module" crossorigin src="/og-image-generator/assets/index-Bq35a5Ow.js"></script>
+    <link rel="stylesheet" crossorigin href="/og-image-generator/assets/index-FDRMlOsV.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
