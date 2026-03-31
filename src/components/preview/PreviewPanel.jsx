@@ -1,8 +1,30 @@
+import { useState } from "react";
 import useSatoriRenderer from "../../hooks/useSatoriRenderer";
+import { svgToPng, downloadPng } from "../../utils/renderOgImage";
 
 export default function PreviewPanel({ cardData }) {
   const { svgString, isRendering } = useSatoriRenderer(cardData);
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const hasData = cardData.title || cardData.description;
+
+  const handleDownload = async () => {
+    if (!svgString) return;
+
+    setIsDownloading(true);
+    try {
+      const pngBlob = await svgToPng(svgString);
+      const filename = cardData.title
+        ? `${cardData.title.replace(/[^a-zA-Z0-9가-힣]/g, "_")}_og.png`
+        : "og-image.png";
+      downloadPng(pngBlob, filename);
+    } catch (err) {
+      console.error("다운로드 실패:", err);
+      alert("PNG 다운로드에 실패했습니다.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
@@ -16,10 +38,11 @@ export default function PreviewPanel({ cardData }) {
           )}
         </h2>
         <button
+          onClick={handleDownload}
+          disabled={!svgString || isDownloading}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-sm font-medium rounded-lg transition-colors"
-          disabled={!svgString}
         >
-          📥 PNG 다운로드
+          {isDownloading ? "⏳ 변환 중..." : "📥 PNG 다운로드"}
         </button>
       </div>
 
@@ -42,13 +65,18 @@ export default function PreviewPanel({ cardData }) {
         )}
       </div>
 
-      {/* 하단 정보 */}
+      {/* 이미지 크기 + 파일명 미리보기 */}
       <div className="mt-4 p-3 bg-slate-900 rounded-lg flex items-center justify-between">
         <p className="text-xs text-slate-500">
           📐 현재 템플릿:{" "}
           <span className="text-slate-300">{cardData.template}</span>
         </p>
-        <p className="text-xs text-slate-600">1200 × 630px · PNG</p>
+        <p className="text-xs text-slate-600">
+          {hasData && cardData.title
+            ? `${cardData.title.replace(/[^a-zA-Z0-9가-힣]/g, "_")}_og.png`
+            : "og-image.png"}
+          {" · "}1200 × 630px
+        </p>
       </div>
     </div>
   );
